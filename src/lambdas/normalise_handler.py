@@ -6,8 +6,7 @@ import boto3
 from src.extraction.csv_handler import COLUMN_NAMES, create_columns, extract_data
 from src.normalise.clean import (
     SENSITIVE_COLUMNS,
-    format_date_time,
-    get_clean_products_df,
+    get_clean_df,
     get_product_df,
     get_transaction_df,
     remove_user_info,
@@ -32,9 +31,9 @@ def handler(event, _):
     dataframe = remove_user_info(
         create_columns(extract_data(path), COLUMN_NAMES), SENSITIVE_COLUMNS
     )
-
-    transaction_dataframe = format_date_time(get_transaction_df(dataframe))
-    product_dataframe = get_clean_products_df(get_product_df(dataframe))
+    dataframe = get_clean_df(dataframe)
+    transaction_dataframe = get_transaction_df(dataframe)
+    product_dataframe = get_product_df(dataframe)
 
     transaction_object_key = f"transaction_{filename}"
     transaction_path = f"/tmp/{transaction_object_key}"

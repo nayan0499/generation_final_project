@@ -14,7 +14,7 @@ COLUMN_NAMES = [
 def extract_data(filename):
     file = pd.read_csv(filename, header=None)
     df = pd.DataFrame(file)
-    df.index = range(1, len(df) + 1)
+    df.index = df.index +1
     return df
 
 
